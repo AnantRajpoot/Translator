@@ -13,6 +13,13 @@ googleGmsGoogleServices = "4.4.3"
 firebaseMlVision = "24.1.0"
 translate = "17.0.3"
 
+room = "2.6.1"
+mlkitLanguageId = "17.0.0"
+lifecycleScope = "2.8.3"
+kotlinKapt = "2.0.21"
+roomCommonJvm = "2.7.2"
+roomRuntimeAndroid = "2.7.2"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -22,11 +29,25 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
-firebase-ml-vision = { group = "com.google.firebase", name = "firebase-ml-vision", version.ref = "firebaseMlVision" }
 translate = { group = "com.google.mlkit", name = "translate", version.ref = "translate" }
+# For database operations
+androidx-lifecycle-scope = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleScope"}
+
+# Room Database
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+
+# ML Kit Language ID
+mlkit-language-id = { group = "com.google.android.gms", name = "play-services-mlkit-language-id", version.ref = "mlkitLanguageId" }
+androidx-room-common-jvm = { group = "androidx.room", name = "room-common-jvm", version.ref = "roomCommonJvm" }
+androidx-room-runtime-android = { group = "androidx.room", name = "room-runtime-android", version.ref = "roomRuntimeAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlinKapt" }
+
+
 

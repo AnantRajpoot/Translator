@@ -1,5 +1,7 @@
 package com.devdroid.translator
 
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import android.Manifest
 import android.app.Activity
 import android.content.ClipData
@@ -63,9 +65,15 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var currentSourceLangCode: String = ""
     private var currentTargetLangCode: String = ""
 
+    // History Database-----
+    private lateinit var db: AppDatabase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Initializing the database----
+        db = AppDatabase.getDatabase(this)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -233,7 +241,19 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         translator.translate(input)
             .addOnSuccessListener { translatedText ->
                 textView.text = translatedText
+
+                // SAVE TO HISTORY DATABASE--------
+                lifecycleScope.launch {
+                    val item = TranslationItem(
+                        sourceText = input,
+                        translatedText = translatedText,
+                        sourceLangCode = currentSourceLangCode,
+                        targetLangCode = currentTargetLangCode
+                    )
+                    db.translationDao().insert(item)
+                }
             }
+
             .addOnFailureListener { exception ->
                 Toast.makeText(this@MainActivity, "Failed to translate: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
@@ -263,11 +283,18 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_download_language) {
-            showLanguageDownloadDialog()
-            return true
+        return when (item.itemId) {
+            R.id.action_history -> {
+                val intent = Intent(this, HistoryActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.action_download_language -> {
+                showLanguageDownloadDialog()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun showLanguageDownloadDialog() {

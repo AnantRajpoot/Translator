@@ -21,4 +21,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "Translator"
 include(":app")
- 
